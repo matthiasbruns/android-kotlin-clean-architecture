@@ -9,11 +9,15 @@ import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
- * Created by Bruns on 19.07.2017.
+ * The DogModule injects a DogRepository implementation into the target.
  */
 @Module
 class DogModule {
 
+    /**
+     * @param retrofit required to create the repository implementation for the DogRepository
+     * @return an implementation of the DogRepository
+     */
     @Provides
     @Singleton
     fun provideDogsRepository(retrofit: Retrofit): DogRepository {

@@ -9,6 +9,9 @@ import com.matthiasbruns.kotlintutorial.injection.PresentationModule
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * This dagger component provides all required dependencies for the dog domain to work.
+ */
 @Singleton
 @Component(modules = arrayOf(
         AppModule::class,

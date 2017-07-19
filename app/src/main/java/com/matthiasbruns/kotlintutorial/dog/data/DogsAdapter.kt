@@ -98,7 +98,13 @@ class DogsAdapter : RecyclerView.Adapter<DogsViewHolder>() {
     }
 }
 
+/**
+ * This [DogsViewHolder] binds dog data to the view.
+ */
 class DogsViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    /**
+     * Binds the injected view of this ViewHolder to the Dog object
+     */
     fun bind(dog: Dog) {
         itemView.dog_type_view.text = dog.format.toLowerCase()
         itemView.dog_date_view.text = dog.time

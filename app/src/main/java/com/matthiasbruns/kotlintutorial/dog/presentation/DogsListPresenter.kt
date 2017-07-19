@@ -1,5 +1,6 @@
 package com.matthiasbruns.kotlintutorial.dog.presentation
 
+import android.util.Log
 import com.matthiasbruns.kotlintutorial.config.PresenterConfig
 import com.matthiasbruns.kotlintutorial.dog.data.Dog
 import com.matthiasbruns.kotlintutorial.dog.repository.DogRepository
@@ -12,43 +13,101 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
- * Created by Bruns on 18.07.2017.
+ * This presenter takes care of the DogList logic for the DogsListView.
  */
 class DogsListPresenter : TiPresenter<DogsListView>() {
 
+    /**
+     * Injected
+     * A config for this presenter.
+     */
     @Inject lateinit var presenterConfig: PresenterConfig
 
+    /**
+     * Injected
+     * A DogRepository implementation
+     */
     @Inject lateinit var repository: DogRepository
 
+    /**
+     * Unsubscribes rx subscriptions when needed
+     */
     private val rxHandler = RxTiPresenterDisposableHandler(this)
 
+    /**
+     * Internal presenter cache to store dog data
+     */
+    private val dogCache: MutableList<Dog> = mutableListOf()
+
+    /**
+     * Called when the view was attached to this presenter (when it is available)
+     */
     override fun onAttachView(view: DogsListView) {
         super.onAttachView(view)
 
+        // Listen to view based events
         subscribeToView(view)
-        loadDogs(view)
+
+        if (dogCache.isEmpty()) {
+            // load the dog data
+            loadDogs(view)
+        } else {
+            renderDogs(view, dogCache)
+        }
     }
 
+    /**
+     * Subscribes to every view Observable.
+     */
     private fun subscribeToView(view: DogsListView) {
-        view.onReloadClick()
+        // Reacts to the reload click and gets some new dogs - yay!
+        rxHandler.manageViewDisposable(view.onReloadClick()
+                // debounce will provide a buffer if the user plays monkey on the reload button
                 .debounce(presenterConfig.debounce, TimeUnit.MILLISECONDS)
+                // Cheap way to trigger a reload of the doggies
                 .subscribe({ loadDogs(view) })
+        )
     }
 
+    /**
+     * Creates the dog loading logic wrapped in a Single.
+     * Will also tell the view to show the loading indicator
+     */
     private fun createDogLoader(): Single<List<Dog>> {
         return Single.fromCallable { view!!.getViewModel().setLoading(true) }
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .flatMap<List<Dog>> { s -> repository.getRandomDogs(10) }
+                .flatMap<List<Dog>> { _ -> repository.getRandomDogs(10) }
+                .map { dogs ->
+                    dogCache.clear()
+                    dogCache.addAll(dogs)
+                    return@map dogs
+                }
     }
 
+    companion object {
+        @JvmStatic val TAG = DogsListPresenter::class.java.simpleName!!
+    }
+
+    /**
+     * Loads the dogs from the repository and sets the result in the viewmodel.
+     * Also disables the loading indicator in the view.
+     */
     private fun loadDogs(view: DogsListView) {
         rxHandler.manageDisposable(createDogLoader()
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn { throwable ->
+                    Log.e(TAG, "Could not load cute little doggy pictures.", throwable)
+                    return@onErrorReturn listOf()
+                }
                 .subscribe { dogs ->
-                    val viewModel = view.getViewModel()
-                    viewModel.setDogs(dogs)
-                    viewModel.setLoading(false)
+                    renderDogs(view, dogs)
                 }
         )
+    }
+
+    private fun renderDogs(view: DogsListView, dogs: List<Dog>) {
+        val viewModel = view.getViewModel()
+        viewModel.setDogs(dogs)
+        viewModel.setLoading(false)
     }
 }

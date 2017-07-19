@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">KotlinTutorial</string>
 
+    <string name="loading_title">Loading</string>
+    <string name="loading_message">Get yourself some coffee!</string>
     <string name="dogs_reload">New Random Dogs</string>
 </resources>

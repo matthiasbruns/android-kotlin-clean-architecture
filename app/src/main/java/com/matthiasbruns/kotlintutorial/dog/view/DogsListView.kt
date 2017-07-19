@@ -5,12 +5,17 @@ import io.reactivex.Observable
 import net.grandcentrix.thirtyinch.TiView
 
 /**
- * Created by Bruns on 18.07.2017.
+ * This view connects the view implementation with a presenter.
  */
-
 interface DogsListView : TiView {
 
+    /**
+     * Emits items when the user clicks the reload button
+     */
     fun getViewModel(): DogsListViewModel
 
+    /**
+     * Provides the viewmodel for the presenter
+     */
     fun onReloadClick(): Observable<Any>
 }

@@ -6,9 +6,9 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSnapHelper
+import android.support.v7.widget.*
 import android.view.*
 import com.matthiasbruns.kotlintutorial.KotlinApplication
 import com.matthiasbruns.kotlintutorial.R
@@ -154,11 +154,17 @@ class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwn
         // View injected by kotlin-android-extentions
         dogs_recycler_view.adapter = adapter
 
-        // create a layout manager
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-
+        val layoutManager: RecyclerView.LayoutManager
         // set the layout manager and some props on the RecyclerView
+        if (activity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // create a layout manager
+            layoutManager = LinearLayoutManager(context)
+            layoutManager.orientation = LinearLayoutManager.VERTICAL
+        } else {
+            layoutManager = GridLayoutManager(context, 2)
+            dogs_recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        }
+
         dogs_recycler_view.layoutManager = layoutManager
         dogs_recycler_view.setHasFixedSize(true)
 

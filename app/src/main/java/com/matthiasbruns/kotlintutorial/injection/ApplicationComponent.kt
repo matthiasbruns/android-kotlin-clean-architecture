@@ -3,10 +3,9 @@ package com.matthiasbruns.kotlintutorial.injection
 import com.matthiasbruns.kotlintutorial.KotlinApplication
 import dagger.Component
 
-@Component(modules = arrayOf(ApplicationModule::class))
+@ForApplication
+@Component(modules = arrayOf(AppModule::class))
 interface ApplicationComponent {
-
-    fun application(): KotlinApplication
 
     fun inject(application: KotlinApplication)
 }

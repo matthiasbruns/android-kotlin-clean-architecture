@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KotlinTutorial</string>
+
+    <string name="dogs_reload">New Random Dogs</string>
 </resources>

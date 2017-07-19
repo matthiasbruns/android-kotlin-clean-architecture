@@ -1,7 +1,7 @@
 package com.matthiasbruns.kotlintutorial.dog.repository
 
 import android.support.annotation.IntRange
-import com.matthiasbruns.kotlintutorial.dog.Dog
+import com.matthiasbruns.kotlintutorial.dog.data.Dog
 import io.reactivex.Single
 
 /**

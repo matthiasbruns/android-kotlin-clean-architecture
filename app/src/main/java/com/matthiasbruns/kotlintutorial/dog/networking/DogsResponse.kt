@@ -1,6 +1,6 @@
 package com.matthiasbruns.kotlintutorial.dog.networking
 
-import com.matthiasbruns.kotlintutorial.dog.Dog
+import com.matthiasbruns.kotlintutorial.dog.data.Dog
 
 /**
  * Created by Bruns on 18.07.2017.

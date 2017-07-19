@@ -29,7 +29,7 @@ import net.grandcentrix.thirtyinch.plugin.TiFragmentPlugin
  */
 class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwner {
 
-    private var adapter = DogsAdapter()
+    private val adapter = DogsAdapter()
     private val presenter = DogsListPresenter()
     private val lifecycleRegistry = LifecycleRegistry(this)
 
@@ -64,7 +64,6 @@ class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwn
 
         component.inject(this)
         component.inject(presenter)
-        adapter = DogsAdapter()
 
         viewModel = ViewModelProviders.of(this).get(DogsListViewModel::class.java)
         subscribeToViewModel()

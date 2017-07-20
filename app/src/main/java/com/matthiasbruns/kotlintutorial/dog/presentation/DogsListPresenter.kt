@@ -17,6 +17,13 @@ import javax.inject.Inject
  */
 class DogsListPresenter : TiPresenter<DogsListView>() {
 
+    companion object {
+        /**
+         * TAG for the Android logger
+         */
+        @JvmStatic val TAG = DogsListPresenter::class.java.simpleName!!
+    }
+
     /**
      * Injected
      * A config for this presenter.
@@ -62,8 +69,8 @@ class DogsListPresenter : TiPresenter<DogsListView>() {
     private fun subscribeToView(view: DogsListView) {
         // Reacts to the reload click and gets some new dogs - yay!
         rxHandler.manageViewDisposable(view.onReloadClick()
-                // debounce will provide a buffer if the user plays monkey on the reload button
-                .debounce(presenterConfig.debounce, TimeUnit.MILLISECONDS)
+                // clickDebounce will provide a buffer if the user plays monkey on the reload button
+                .debounce(presenterConfig.clickDebounce, TimeUnit.MILLISECONDS)
                 // Cheap way to trigger a reload of the doggies
                 .subscribe({ loadDogs(view) })
         )
@@ -84,10 +91,6 @@ class DogsListPresenter : TiPresenter<DogsListView>() {
                 }
     }
 
-    companion object {
-        @JvmStatic val TAG = DogsListPresenter::class.java.simpleName!!
-    }
-
     /**
      * Loads the dogs from the repository and sets the result in the viewmodel.
      * Also disables the loading indicator in the view.
@@ -95,6 +98,7 @@ class DogsListPresenter : TiPresenter<DogsListView>() {
     private fun loadDogs(view: DogsListView) {
         rxHandler.manageDisposable(createDogLoader()
                 .observeOn(AndroidSchedulers.mainThread())
+                .toObservable()
                 .onErrorReturn { throwable ->
                     Log.e(TAG, "Could not load cute little doggy pictures.", throwable)
                     return@onErrorReturn listOf()

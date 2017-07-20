@@ -6,7 +6,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Created by Bruns on 19.07.2017.
+ * This module provides presenter dependencies.
  */
 @Module
 class PresentationModule {

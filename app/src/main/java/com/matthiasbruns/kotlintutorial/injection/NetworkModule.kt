@@ -7,9 +7,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+/**
+ * This module provides retrofit and handles its creation.
+ */
 @Module
 class NetworkModule {
 
+    /**
+     * Creates an instance of Retrofit for this app
+     */
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {

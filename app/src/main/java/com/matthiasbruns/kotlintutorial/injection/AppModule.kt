@@ -7,7 +7,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Created by Bruns on 18.07.2017.
+ * This module should be used to inject application scoped dependencies.
  */
 @Module
 class AppModule(private val application: KotlinApplication) {

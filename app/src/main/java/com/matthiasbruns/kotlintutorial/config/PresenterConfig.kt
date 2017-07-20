@@ -1,8 +1,12 @@
 package com.matthiasbruns.kotlintutorial.config
 
 /**
- * Created by Bruns on 19.07.2017.
+ * App-white presenter configuration for equal behavior in all presenters.
  */
 class PresenterConfig {
-    val debounce : Long = 150
+
+    /**
+     * The click debounce time in ms for all presenters
+     */
+    val clickDebounce: Long = 150
 }

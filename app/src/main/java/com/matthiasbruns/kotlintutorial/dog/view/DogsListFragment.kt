@@ -63,6 +63,11 @@ class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwn
      */
     private lateinit var viewModel: DogsListViewModel
 
+    /**
+     * Stores the currently displayed Dialog
+     */
+    private var dialog: Dialog? = null
+
     init {
         // Adds the MVP framework to our fragment - we could also extend TiFragment, but I am no fan of inheritance
         addPlugin(TiFragmentPlugin<DogsListPresenter, DogsListView>(TiPresenterProvider { presenter }))
@@ -140,8 +145,6 @@ class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwn
             }
         })
     }
-
-    private var dialog: Dialog? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the view - why should I check, id the inflater is null?

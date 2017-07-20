@@ -859,7 +859,7 @@ object to its subscribers.
  It also reacts to user events published through Observables in the view and could also 
  trigger actions on the view (if there were any).
  
- ````kotlin
+````kotlin
 companion object {
     /**
      * TAG for the Android logger

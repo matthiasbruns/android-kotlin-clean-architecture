@@ -10,6 +10,11 @@ If you cannot understand parts of Kotlin, which I do not explain, have a look at
 
 
 ## Project Setup
+<u>I use Android Studio 3 Canary 6 in this tutorial.</u>
+
+Create a new project in Android Studio and mark the **Include Kotlin support** checkbox. 
+Now we are ready to program in Kotlin.
+
 In this tutorial we will use the following libraries
 
 - Kotlin[https://kotlinlang.org](https://kotlinlang.org)

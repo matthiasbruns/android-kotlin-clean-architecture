@@ -59,7 +59,7 @@ A sample request looks like this:
 http://thedogapi.co.uk/api/v1/dog?limit=20
 ````
 
-The api limits the dogs count by 20 per request.
+The api limits the dogs count to 20 per request.
 
 ## Dog Model
 The dog model class is a simple pojo, which stores the properties of a dog.
@@ -179,7 +179,7 @@ the repository requests dogs from the api. If the response has an error, the err
 If we have response data, the data will be returned.
 
 We could add another implementation, which interacts with data in a cache or database,
-another one which synchronizes data with a cloud storage and another one which is a file based repository.
+one which synchronizes data with a cloud storage and another which is a file based repository.
 As you can see, we are not limited to one datasource.
 
 ## Dagger 2
@@ -280,7 +280,7 @@ class KotlinApplication : Application() {
 }
 ````
 
-Ignore the **companion object** for now. We start with the snippet:
+Ignore the **companion object** for now. We start with this snippet:
 
 ````kotlin
 /**
@@ -294,7 +294,7 @@ private val component: ApplicationComponent by lazy {
 }
 ````
 
-The components is stored in the application class as a var (write-once) property.
+The components is stored in the application class as a val (write-once) property.
 The components is created on its first access. This is indicated by **by lazy**.
 The code in the curly braces will be called during the initialization, which 
 creates an instance of the ApplicationComponents with the Dagger builder.
@@ -309,7 +309,7 @@ override fun onCreate() {
 }
 ````
 
-The Application's onCreate method will be called when the app is created. We access the components, 
+The Application's onCreate method will be called when the app is created. We access the component, 
 which is being created lazily and inject dependencies we might need in the Application class (currently none).
 In the next line, we set the property in the companion object.
 
@@ -381,7 +381,7 @@ The DogComponent uses four modules:
 * NetworkModule
 * DogModule
 
-The AppModule ws describes above.
+The AppModule was describes above.
 
 ### PresentationModule
 
@@ -473,9 +473,9 @@ Retrofit will be injected by the NetworkModule.
 
 ## MVPVM
 
-After we went through the whole model part of MVPVM, we can start looking at the view and presenter.
+After we went through the whole model part of MVPVM, we can start looking at the view, viewmodel and presenter.
 
-### Adapter and ViewModel
+### Adapter and ViewHolder
 We need an adapter for the RecyclerView. The DogsAdapter knows how to load the images and display
 the dog information in an item view.
 
@@ -607,7 +607,7 @@ The DogsViewHolder loads the dog image and sets the TextViews' texts for each it
  * This model stores the data required by the view.
  * The view can observice this viewmodel and its properties and react to changes.
  */
-class DogsListViewModel : ViewModel() {
+class DogsListViewModel : viewmodel() {
 
     /**
      * Holds a list of dog data which can be observed and changed
@@ -650,8 +650,8 @@ class DogsListViewModel : ViewModel() {
 }
 ````
 
-The ViewModel is a POJO with LiveData properties to enable the view to observe its properties.
-This ViewModel stores two properties:
+The viewmodel is a POJO with LiveData properties to enable the view to observe its properties.
+This viewmodel stores two properties:
 
 * dogs - a List of Dog objects
 * loading - indicates if the loading dialog should be displayed
@@ -677,7 +677,7 @@ interface DogsListView : TiView {
 ````
 
 The view interface is quite simple for this use case.
-The presenter should be able to observe to the reload click event and retrieve the ViewModel 
+The presenter should be able to observe to the reload click event and retrieve the viewmodel 
 to set values on it.
 
 ### DogsListFragment
@@ -697,7 +697,7 @@ class DogsListFragment : CompositeFragment(), DogsListView, LifecycleRegistryOwn
 Our fragment extends the CompositeFragment provides by the CompositeAndroid library.
 It also implements DogListView and LifecycleRegistryOwner. The view interface acts as a bridge 
 between the DogListPresenter and this fragment. 
-LifecycleRegistryOwner provides lifecycle information for the ViewModel we observe in this class.
+LifecycleRegistryOwner provides lifecycle information for the viewmodel we observe in this class.
 
 ````kotlin
 /**
@@ -711,7 +711,7 @@ private val adapter = DogsAdapter()
 private val presenter = DogsListPresenter()
 
 /**
- * The LifecycleRegistry is required to allow the ViewModel to observe the lifecycle of this fragment
+ * The LifecycleRegistry is required to allow the viewmodel to observe the lifecycle of this fragment
  */
 private val lifecycleRegistry = LifecycleRegistry(this)
 
@@ -735,8 +735,10 @@ The DogsListFragment stores the properties above. The first is the adapter, whic
 layouts for the RecyclerView. The second is the presenter, which we use in the MVP pattern.
 The third property links the Android Architecture Components Lifecycle feature with our fragment.
 The forth emits items to its subscribers, when the user clicks the reload button. 
-dialog is a reference to a displayed dialog. It can be null. The last property
+Dialog is a reference to a displayed dialog. It can be null. The last property
 stores the reference to our viewmodel.
+
+
 **lateinit var** means, that Kotlin expects this properties to be initializes later.
 
 As mentioned in the beginning, I use a composition framework to get rid of deep inheritance graphs.
@@ -794,9 +796,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ````
 
 In **onCreate** we enable the fragment to inflate its menu. We also create the onReloadClickSubject,
-which can be subscribes to after this line. After the injection lines, we request an instance of 
+which can be subscribed to after this line. After the injection lines, we request an instance of 
 DogsListViewModel and store it in our fragment. **subscribeToViewModel()** observes changes in the
-ViewModel ans updates the UI if required.
+viewmodel ans updates the UI if required.
 
 ````kotlin
 /**
@@ -853,8 +855,9 @@ When the user clicks the reload icon in the ToolBar, onReloadClickSubject.onNext
 object to its subscribers.
 
 ### DogListPresenter
- The presenter laods data from a repository and sets the results in the DogListViewModel.
- It also reacts to user events published though Observables in the view and could trigger actions on the view.
+ The presenter loads data from a repository and sets the results in the DogListViewModel.
+ It also reacts to user events published through Observables in the view and could also 
+ trigger actions on the view (if there were any).
  
  ````kotlin
 companion object {
@@ -930,7 +933,7 @@ private fun subscribeToView(view: DogsListView) {
 }
 ````
 
-subscribeToView() subscribes to the onReloadClick. The view emits items, when the user clicks on the reload button.
+**subscribeToView()** subscribes to the onReloadClick. The view emits items, when the user clicks on the reload button.
 To prevent click spamming, we added a debounce opterator. The subscription will call loadDogs().
 
 ````kotlin
@@ -973,12 +976,12 @@ private fun renderDogs(view: DogsListView, dogs: List<Dog>) {
     viewModel.setLoading(false)
 }
 ````
-loadDogs() asks the repository for a collection of dogs. It does not know where the dogs are loaded from.
-After the dogs were loaded, the result is sent to the ViewModel.
+**loadDogs()** asks the repository for a collection of dogs. It does not know where the dogs are loaded from.
+After the dogs were loaded, the result is sent to the viewmodel.
 
 ## Summary
 
-We built an app in Kotlin with some good libraries and upcoming Android frameworks as the ViewModel class from the
+We built an app in Kotlin with some good libraries and upcoming Android frameworks as the viewmodel class from the
 Android Architecture Components. We used Retrofit 2 to load the data from an api and Dagger 2 to manage 
 dependency injection. There are many MVP frameworks out there. I picked ThirtyInch, because I use it in my job.
 RxJava 2 is good to get rid of the callback hell and improve threading usage.
@@ -987,6 +990,6 @@ RxJava 2 is good to get rid of the callback hell and improve threading usage.
 
 If you decide to use MVPVM and want to have a clean architecture, dependency injection is a good way
 to decouple classes. The repository pattern allows you to switch to or add new datasources. The new
-ViewModel and Lifecycle classes in the upcoming Architecture Components improve the MVP pattern and
+viewmodel and Lifecycle classes in the upcoming Architecture Components improve the MVP pattern and
 provides another layer of abstraction.
 

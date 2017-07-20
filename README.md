@@ -171,9 +171,9 @@ What does this implementation do?
 We inject an implementation of the DogsApi into this class.
 When someone calls 
 
-`````kotlin
+````kotlin
 getRandomDogs(@IntRange(from = 1, to = 20) max: Int): Single<List<Dog>>
-`````
+````
 
 the repository requests dogs from the api. If the response has an error, the error will be thrown.
 If we have response data, the data will be returned.
@@ -190,7 +190,7 @@ It also initializes Retrofit and provides resources to our presenter.
 
 ### Application Component
 
-`````kotlin
+````kotlin
 /**
  * This component should be used to inject application scoped dependencies.
  */
@@ -201,10 +201,10 @@ interface ApplicationComponent {
     fun inject(application: KotlinApplication)
 }
 
-`````
+````
 This components uses the AppModule, which provides application-wide dependencies like the AppContext.
  
- ````kotlin
+````kotlin
 /**
  * This module should be used to inject application scoped dependencies.
  */
@@ -838,7 +838,7 @@ changes, the viewmodel will notify us. We simply send the changed data to the ad
 The seconds one observes changes to the loading flag in the viewmodel. If loading is true, a loading
 dialog will be shown.
 
-`````kotlin
+````kotlin
  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
     when (item!!.itemId) {
         R.id.action_reload -> {
@@ -849,7 +849,7 @@ dialog will be shown.
     }
     return super.onOptionsItemSelected(item)
 }
-`````
+````
 
 When the user clicks the reload icon in the ToolBar, onReloadClickSubject.onNext(Object()) emits an
 object to its subscribers.

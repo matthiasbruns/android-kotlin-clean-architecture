@@ -17,15 +17,15 @@ Now we are ready to program in Kotlin.
 
 In this tutorial we will use the following libraries
 
-- Kotlin [https://kotlinlang.org](https://kotlinlang.org)
-- Dagger 2 [https://github.com/google/dagger](https://github.com/google/dagger)
-- RxAndroid 2 [https://github.com/ReactiveX/RxAndroid](https://github.com/ReactiveX/RxAndroid)
-- RxKotlin [https://github.com/ReactiveX/RxKotlin](https://github.com/ReactiveX/RxKotlin)
-- ThirtyInch [https://github.com/grandcentrix/ThirtyInch](https://github.com/grandcentrix/ThirtyInch)
-- Architecture Components [https://developer.android.com/topic/libraries/architecture/index.html](https://developer.android.com/topic/libraries/architecture/index.html)
-- Retrofit 2 [http://square.github.io/retrofit](http://square.github.io/retrofit/)
-- CompositeAndroid [https://github.com/passsy/CompositeAndroid](https://github.com/passsy/CompositeAndroid)
-- Glide [https://github.com/bumptech/glide](https://github.com/bumptech/glide)
+* Kotlin [https://kotlinlang.org](https://kotlinlang.org)
+* Dagger 2 [https://github.com/google/dagger](https://github.com/google/dagger)
+* RxAndroid 2 [https://github.com/ReactiveX/RxAndroid](https://github.com/ReactiveX/RxAndroid)
+* RxKotlin [https://github.com/ReactiveX/RxKotlin](https://github.com/ReactiveX/RxKotlin)
+* ThirtyInch [https://github.com/grandcentrix/ThirtyInch](https://github.com/grandcentrix/ThirtyInch)
+* Architecture Components [https://developer.android.com/topic/libraries/architecture/index.html](https://developer.android.com/topic/libraries/architecture/index.html)
+* Retrofit 2 [http://square.github.io/retrofit](http://square.github.io/retrofit/)
+* CompositeAndroid [https://github.com/passsy/CompositeAndroid](https://github.com/passsy/CompositeAndroid)
+* Glide [https://github.com/bumptech/glide](https://github.com/bumptech/glide)
 
 The resulting build.gradle can be found here:
 

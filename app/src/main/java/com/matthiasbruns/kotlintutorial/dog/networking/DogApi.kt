@@ -14,6 +14,6 @@ interface DogApi {
     /**
      * You can request dogs from there - the limit is maxed to 20 per request
      */
-    @GET("/api/v1/dog")
+    @GET("/v2/dog.php")
     fun getRandom(@Query("limit") @IntRange(from = 1, to = 20) limit: Int): Single<DogsResponse>
 }

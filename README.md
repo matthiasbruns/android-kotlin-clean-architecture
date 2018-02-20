@@ -35,13 +35,13 @@ We also have to enable kotlin in the project build.gradle:
 
 ````gradle
 buildscript {
-    ext.kotlin_version = '1.1.3-2'
+    ext.kotlin_version = '1.1.51'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -52,11 +52,11 @@ buildscript {
 I picked a useless but funny API which provides images of dogs.
 The documentation of the api can be found here:
 
-[http://docs.dogapi1.apiary.io](http://docs.dogapi1.apiary.io/#)
+[https://thedogapi.co.uk/documentation.php](https://thedogapi.co.uk/documentation.php)
 
 A sample request looks like this:
 ````
-http://thedogapi.co.uk/api/v1/dog?limit=20
+https://api.thedogapi.co.uk/v2/dog.php?limit=20
 ````
 
 The api limits the dogs count to 20 per request.
@@ -91,7 +91,7 @@ interface DogApi {
     /**
      * You can request dogs from there - the limit is maxed to 20 per request
      */
-    @GET("/api/v1/dog")
+    @GET("/v2/dog.php")
     fun getRandom(@Query("limit") @IntRange(from = 1, to = 20) limit: Int): Single<DogsResponse>
 }
 ````
@@ -434,7 +434,7 @@ class NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://thedogapi.co.uk")
+                .baseUrl("https://api.thedogapi.co.uk")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
